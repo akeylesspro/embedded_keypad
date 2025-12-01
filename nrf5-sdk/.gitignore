@@ -1,0 +1,14 @@
+# Examples
+examples/*
+
+*.msi
+
+# Segger Embedded Studio
+*.emSession
+
+# Segger JLink
+*.jlink
+
+# OS X
+.DS_Store
+external/micro-ecc/**/_build/*

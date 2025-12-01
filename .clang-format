@@ -1,0 +1,45 @@
+﻿---
+BasedOnStyle: LLVM
+AlignConsecutiveAssignments: true
+AlignConsecutiveDeclarations: true
+AlignEscapedNewlines: Right
+AllowShortFunctionsOnASingleLine: InlineOnly
+AlignTrailingComments: true
+BreakBeforeBraces: Custom
+InsertBraces: true
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: false
+  AfterEnum: false
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: false
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+BreakBeforeTernaryOperators: false
+SeparateDefinitionBlocks: Always
+ColumnLimit: "140"
+CommentPragmas: "^ IWYU pragma:"
+# KeepEmptyLinesAtEOF: true
+IncludeBlocks: Regroup
+IndentWidth: 4
+Language: Cpp
+Standard: c++20
+NamespaceIndentation: All
+IncludeIsMainRegex: (_.*)?$
+---
+Language: Json
+BasedOnStyle: LLVM
+BreakArrays: false
+SpacesInContainerLiterals: false
+---
+Language: Proto
+BasedOnStyle: LLVM
+ColumnLimit: 0
