@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_dis_c.h Documentation</title>
+  </head>
+  <body>
+    <h1>ble_dis_c.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public API and types for the Device Information Service (DIS) client.</p>
+
+    <h2>Key types</h2>
+    <ul>
+      <li><code>ble_dis_c_t</code>: client instance state.</li>
+      <li><code>ble_dis_c_evt_t</code>: event container for discovery and read responses.</li>
+      <li><code>ble_dis_c_char_type_t</code>: supported DIS characteristic types.</li>
+      <li><code>ble_dis_c_init_t</code>: initialization parameters.</li>
+    </ul>
+
+    <h2>Macros</h2>
+    <ul>
+      <li><code>BLE_DIS_C_DEF</code> and <code>BLE_DIS_C_ARRAY_DEF</code></li>
+    </ul>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>ble_dis_c_init</code></li>
+      <li><code>ble_dis_c_on_db_disc_evt</code></li>
+      <li><code>ble_dis_c_on_ble_evt</code></li>
+      <li><code>ble_dis_c_read</code></li>
+      <li><code>ble_dis_c_handles_assign</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Some DIS characteristic types are disabled via comments.</p>
+  </body>
+</html>

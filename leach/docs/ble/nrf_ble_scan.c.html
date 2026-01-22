@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nrf_ble_scan.c Documentation</title>
+  </head>
+  <body>
+    <h1>nrf_ble_scan.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the Nordic BLE scanning module. It provides scanning,
+      filtering, and optional auto-connect behavior.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize scanning and connection parameters.</li>
+      <li>Maintain scan filters (name, address, UUID, appearance, short name).</li>
+      <li>Parse advertisement reports and determine filter matches.</li>
+      <li>Auto-connect when a filter matches and auto-connect is enabled.</li>
+      <li>Raise scan events to the application.</li>
+    </ul>
+
+    <h2>Key behaviors</h2>
+    <ul>
+      <li><code>nrf_ble_scan_init</code> configures defaults or provided params.</li>
+      <li><code>nrf_ble_scan_start</code> / <code>nrf_ble_scan_stop</code></li>
+      <li><code>nrf_ble_scan_filter_set</code> and filter enable/disable APIs.</li>
+      <li><code>nrf_ble_scan_on_ble_evt</code> handles BLE events.</li>
+    </ul>
+
+    <h2>Filter logic</h2>
+    <ul>
+      <li>Supports multi-filter match and match-all mode.</li>
+      <li>Address filtering can compare against target lists.</li>
+      <li>UUID filtering can be combined with MAC filtering.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Contains project-specific MAC address filter integration.</p>
+  </body>
+</html>

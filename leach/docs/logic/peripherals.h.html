@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>peripherals.h Documentation</title>
+  </head>
+  <body>
+    <h1>peripherals.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public interface for peripheral helpers and device readings.</p>
+
+    <h2>Key constants</h2>
+    <p><code>SERIAL_NUMBER_WIDTH</code> defines the device serial buffer size.</p>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>peripherals_init</code></li>
+      <li><code>peripherals_read_battery_level</code></li>
+      <li><code>peripherals_read_temperature</code></li>
+      <li><code>peripherals_read_vdd</code></li>
+      <li><code>peripherals_toggle_leds</code></li>
+      <li><code>peripherals_ignition_on</code> / <code>peripherals_ignition_off</code></li>
+      <li><code>peripheral_turn_on_all_led</code> / <code>peripheral_turn_off_all_led</code></li>
+      <li><code>peripheral_set_led</code> / <code>peripheral_toggle_led</code></li>
+      <li><code>peripheral_is_switch_ignition_on</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Declares the <code>device_serial_number</code> buffer for HAL use.</p>
+  </body>
+</html>

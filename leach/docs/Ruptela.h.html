@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ruptela.h Documentation</title>
+  </head>
+  <body>
+    <h1>Ruptela.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Declares the Ruptela service simulation types, constants, and public API.
+      This header is only active when <code>RUPTELA_SERVICE_SIMULATION</code> is enabled.
+    </p>
+
+    <h2>Data types</h2>
+    <ul>
+      <li><code>Ruptela_Log</code>: timestamped log record with codes and values.</li>
+      <li><code>Ruptela_Command</code>: parsed command payload structure.</li>
+    </ul>
+
+    <h2>Log code constants</h2>
+    <p>
+      Defines log codes such as <code>RUPTELA_LOG_DISARMED</code>,
+      <code>RUPTELA_LOG_PASSWORD_CHANGED</code>, and
+      <code>RUPTELA_LOG_LEACH_CONNECTED</code>.
+      Codes are encoded as <code>0xAAAABBBB</code> where <code>AAAA</code> is the log code
+      and <code>BBBB</code> is the sub-code.
+    </p>
+
+    <h2>Command code constants</h2>
+    <p>
+      Defines commands like <code>RUPTELA_COMMAND_DISARM</code>,
+      <code>RUPTELA_COMMAND_NEW_PASSWORD</code>, and
+      <code>RUPTELA_COMMAND_SET_TIME</code>.
+      Codes are encoded as <code>0xAAAABBBB</code>.
+    </p>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>read_new_security_state</code></li>
+      <li><code>ruptela_send_log</code></li>
+      <li><code>ruptela_decode_command</code></li>
+      <li><code>getEnablePairing</code></li>
+      <li><code>resetEnablePairing</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Assumes <code>SecurityState</code> is defined elsewhere.</li>
+      <li>Declarations are guarded by <code>RUPTELA_SERVICE_SIMULATION</code>.</li>
+    </ul>
+  </body>
+</html>

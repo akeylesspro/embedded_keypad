@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>FreeRTOSConfig.h Documentation</title>
+  </head>
+  <body>
+    <h1>FreeRTOSConfig.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      FreeRTOS kernel configuration for the Leach firmware. It defines
+      scheduler behavior, memory sizes, interrupt priorities, and features.
+    </p>
+
+    <h2>Key scheduler settings</h2>
+    <ul>
+      <li>Preemption enabled and tickless idle enabled.</li>
+      <li>Tick source uses RTC with a 1024 Hz tick rate.</li>
+    </ul>
+
+    <h2>Memory and task settings</h2>
+    <ul>
+      <li>Heap size configured via <code>configTOTAL_HEAP_SIZE</code>.</li>
+      <li>Minimal stack size and timer task stack/queue sizes defined.</li>
+    </ul>
+
+    <h2>Synchronization features</h2>
+    <p>Mutexes, recursive mutexes, and counting semaphores are enabled.</p>
+
+    <h2>Interrupt configuration</h2>
+    <ul>
+      <li>Kernel and syscall interrupt priorities are explicitly set.</li>
+      <li>RTC1 is used as the tick interrupt.</li>
+    </ul>
+
+    <h2>Hooks and diagnostics</h2>
+    <ul>
+      <li>Idle hook enabled.</li>
+      <li>Stack overflow and malloc failed hooks disabled.</li>
+      <li>Optional debug asserts via <code>configASSERT</code>.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Settings are tuned for low-power embedded use.</p>
+  </body>
+</html>

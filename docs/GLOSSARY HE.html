@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <title>GLOSSARY HE</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet"
+            href="file:///c:\Users\avrah\.cursor\extensions\shd101wyy.markdown-preview-enhanced-0.8.20-universal\crossnote\dependencies\katex\katex.min.css">
+
+
+
+
+
+      <link rel="stylesheet" href="dark-theme.css">
+      <style>
+            .highlight-target {
+                  transition: border-color 0.3s ease;
+                  border: 2px #ffd700 solid;
+            }
+      </style>
+      <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+                        link.addEventListener('click', function (e) {
+                              const targetId = this.getAttribute('href').substring(1);
+                              const targetElement = document.getElementById(targetId);
+                              if (targetElement) {
+                                    e.preventDefault();
+                                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    targetElement.classList.add('highlight-target');
+                                    setTimeout(function () {
+                                          targetElement.classList.remove('highlight-target');
+                                    }, 1000);
+                              }
+                        });
+                  });
+            });
+      </script>
+
+</head>
+
+<body for="html-export">
+
+
+      <div class="crossnote markdown-preview  ">
+
+            <h1 id="מונחון">מונחון </h1>
+
+            <h2 id="תוכן-עניינים">תוכן עניינים</h2>
+            <ul>
+                  <li><a href="#פלטפורמה-וסטאק-קושחה">פלטפורמה וסטאק קושחה</a>
+                        <ul>
+                              <li><a href="#mcu">MCU</a></li>
+                              <li><a href="#mcu-nrf52">MCU (nRF52)</a></li>
+                              <li><a href="#softdevice-s132">SoftDevice S132</a></li>
+                              <li><a href="#rtos">RTOS</a></li>
+                              <li><a href="#freertos">FreeRTOS</a></li>
+                              <li><a href="#dfu">DFU</a></li>
+                              <li><a href="#eeprom">EEPROM</a></li>
+                              <li><a href="#crc">CRC</a></li>
+                        </ul>
+                  </li>
+                  <li><a href="#מושגי-ble-ופרוטוקולים">מושגי BLE ופרוטוקולים</a>
+                        <ul>
+                              <li><a href="#gap">GAP</a></li>
+                              <li><a href="#gatt">GATT</a></li>
+                              <li><a href="#ble-central">BLE Central</a></li>
+                              <li><a href="#ble-peripheral">BLE Peripheral</a></li>
+                        </ul>
+                  </li>
+                  <li><a href="#משימות-ריצה-ולוגיקה">משימות ריצה ולוגיקה</a>
+                        <ul>
+                              <li><a href="#monitor-thread">Monitor Thread</a></li>
+                              <li><a href="#keypad-thread">Keypad Thread</a></li>
+                              <li><a href="#ble-thread">BLE Thread</a></li>
+                              <li><a href="#logger-thread">Logger Thread</a></li>
+                              <li><a href="#softdevice-task">SoftDevice Task</a></li>
+                        </ul>
+                  </li>
+                  <li><a href="#ממשק-חומרה-ו-hal">ממשק חומרה ו-HAL</a>
+                        <ul>
+                              <li><a href="#bsp">BSP</a></li>
+                              <li><a href="#hal">HAL</a></li>
+                              <li><a href="#gpio">GPIO</a></li>
+                              <li><a href="#pwm">PWM</a></li>
+                              <li><a href="#adc">ADC/SAADC</a></li>
+                              <li><a href="#uart">UART</a></li>
+                              <li><a href="#vdd">VDD</a></li>
+                              <li><a href="#drivers">Drivers</a></li>
+                              <li><a href="#spi">SPI</a>
+                                    <ul>
+                                          <li><a href="#mosi">MOSI</a></li>
+                                          <li><a href="#miso">MISO</a></li>
+                                          <li><a href="#sck">SCK</a></li>
+                                    </ul>
+                              </li>
+                        </ul>
+                  </li>
+                  <li><a href="#כלים-ודיאגנוסטיקה">כלים ודיאגנוסטיקה</a>
+                        <ul>
+                              <li><a href="#freertos">FreeRTOS</a></li>
+                              <li><a href="#rtt">RTT</a></li>
+                        </ul>
+                  </li>
+                  <li><a href="#קישוריות-ומסלולי-נתונים">קישוריות ומסלולי נתונים</a>
+                        <ul>
+                              <li><a href="#ble-dual-role">BLE Dual-Role</a></li>
+                        </ul>
+                  </li>
+            </ul>
+
+            <h2 id="פלטפורמה-וסטאק-קושחה">פלטפורמה וסטאק קושחה </h2>
+            <ul>
+                  <li id="mcu"><strong>MCU (Microcontroller Unit)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מערכת‑על‑שבב (SoC) שמכילה מעבד, זיכרון, פריפריות I/O ופונקציות נוספות על שבב יחיד. MCU משמש
+                        כמוח של מערכות משובצות ומספק את כל הרכיבים הנדרשים להרצת קושחה ללא צורך ברכיבים חיצוניים רבים.
+                        ב-Cloud-Wise Keypad נעשה שימוש ב-<a href="#mcu-nrf52">nRF52</a> שהוא MCU ממשפחת ARM Cortex-M4 של
+                        Nordic.</li>
+                  <li id="mcu-nrf52"><strong>MCU ‏(nRF52)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מערכת‑על‑שבב ממשפחת ARM Cortex‑M4 של Nordic שמריצה את כל שכבות הקושחה – מה-<a
+                              href="#rtos">RTOS</a> ועד אפליקציית
+                        המקלדת.</li>
+                  <li id="softdevice-s132"><strong>SoftDevice S132</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        סטאק BLE קנייני שמספק שירותי <a href="#gap">GAP</a>,‏ <a href="#gatt">GATT</a>, פרסום, אבטחה
+                        ושכבת קישור כך שהמקלדת יכולה לפעול במקביל
+                        כ-<a href="#ble-peripheral">Peripheral</a> וכ-<a href="#ble-central">Central</a>.</li>
+                  <li id="rtos"><strong>RTOS (Real-Time Operating System)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מערכת הפעלה המיועדת ליישומים דורשי זמן-אמת, המספקת סקדולר דטרמיניסטי, ניהול משימות, טיימרים
+                        ומנגנוני סנכרון. ב-Cloud-Wise Keypad נעשה שימוש ב-<a href="#freertos">FreeRTOS</a> שמבטיח תגובה
+                        מהירה לאירועי מקלדת,
+                        BLE ומצבי אבטחה.</li>
+                  <li id="dfu"><strong>DFU (Device Firmware Update)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מנגנון עדכון קושחה Over-The-Air (OTA) שמאפשר החלפת אימג'ים מרחוק דרך BLE ללא צורך בחיבור פיזי
+                        או פתיחת המכשיר. Bootloader ה-DFU המאובטח מאמת חתימות דיגיטליות לפני התקנת קושחה חדשה כדי למנוע
+                        התקנות זדוניות.</li>
+                  <li id="eeprom"><strong>EEPROM (Electrically Erasable Programmable Read-Only Memory)</strong> <a
+                              href="#תוכן-עניינים" style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        זיכרון פלאש לא-נדיף (Non-Volatile) שניתן למחוק ולכתוב מחדש חשמלית. ב-Cloud-Wise Keypad נעשה
+                        שימוש
+                        ב-EEPROM חיצוני דרך <a href="#spi">SPI</a> (סדרת M95) לאחסון קונפיגורציה, רשימות שיוך BLE, דגלי
+                        אבטחה ונתונים
+                        מתמידים נוספים. בניגוד ל-RAM, תוכן ה-EEPROM נשמר גם לאחר כיבוי ההתקן.</li>
+                  <li id="crc"><strong>CRC (Cyclic Redundancy Check)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        אלגוריתם בדיקת תקינות נתונים המשמש לאיתור שגיאות בשידור או באחסון. ב-Cloud-Wise Keypad נעשה
+                        שימוש
+                        ב-CRC כדי לאמת את תקינות בלוקי קונפיגורציה ב-<a href="#eeprom">EEPROM</a>; אם ה-CRC לא תואם,
+                        המערכת מזהה קלקול נתונים
+                        ומשחזרת ערכי ברירת מחדל או מבצעת איפוס.</li>
+            </ul>
+            <h2 id="מושגי-ble-ופרוטוקולים">מושגי BLE ופרוטוקולים </h2>
+            <ul>
+                  <li id="gap"><strong>GAP (Generic Access Profile)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        פרופיל הגישה הכללי של BLE שמגדיר כיצד התקנים מתגלים, מפרסמים, סורקים ומתחברים זה לזה. GAP מטפל
+                        בפרסום (Advertising), סריקה (Scanning), יוזם חיבורים (Initiating) וניהול מצבי חיבור. המקלדת
+                        נשענת
+                        על GAP לשליטה בהתנהגות ה-<a href="#ble-peripheral">Peripheral</a> (פרסום שירותים) וה-<a
+                              href="#ble-central">Central</a> (סריקת התקנים אחרים).</li>
+                  <li id="gatt"><strong>GATT (Generic Attribute Profile)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        פרופיל המאפיינים הכללי שמגדיר את מבנה הנתונים והשירותים ב-BLE. GATT מבוסס על מודל Client-Server
+                        שבו שירותים (Services) מכילים מאפיינים (Characteristics) שניתן לקרוא, לכתוב או להירשם אליהם
+                        (Notifications). באמצעות GATT נחשפים מאפייני ההצתה, הלוגים, פקודות ונתיב ה-<a
+                              href="#dfu">DFU</a> של המקלדת.</li>
+                  <li id="ble-central"><strong>BLE Central</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        תפקיד ב-BLE שבו ההתקן יוזם חיבורים ומתחבר להתקנים אחרים (<a
+                              href="#ble-peripheral">Peripherals</a>). Central מבצע סריקות,
+                        מזהה התקנים מפרסמים ומתחבר אליהם. במקלדת Cloud-Wise, תפקיד ה-Central מאפשר חיבור לפריפריות
+                        "leach" ולמודם Ruptela כדי לשמר קישורים מוצפנים.</li>
+                  <li id="ble-peripheral"><strong>BLE Peripheral</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        תפקיד ב-BLE שבו ההתקן מפרסם שירותים ומאפשר להתקנים אחרים (<a href="#ble-central">Centrals</a>)
+                        להתחבר אליו. Peripheral
+                        משדר חבילות פרסום (Advertising Packets) שמכילות מידע על השירותים שלו. המקלדת פועלת כ-Peripheral
+                        כדי לחשוף את שירותי ה-Leach המותאמים שלה ולאפשר חיבור מהאפליקציות או מכלי דיאגנוסטיקה.</li>
+                  <li id="cloud-wise-sdk"><strong>Cloud-Wise SDK</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        SDK פנימי שכולל <a href="#hal">HAL</a>, מנהלי התקנים ולוגיקה לשימוש חוזר בין מוצרי Cloud-Wise
+                        שונים; הקוד
+                        ב-<code>leach/</code> מקשר אותם לאפליקציית המקלדת.</li>
+            </ul>
+            <h2 id="משימות-ריצה-ולוגיקה">משימות ריצה ולוגיקה </h2>
+            <ul>
+                  <li><strong>שכבת לוגיקה</strong><br>
+                        אוסף מודולים משותפים (<code>monitor</code>,‏ <code>keypad</code>,‏ <code>configuration</code>,‏
+                        <code>state_machine</code> וכו') שמממשים מצבי אבטחה, טיפול במקלדת, מדיניות שיוך וניהול זמן
+                        מערכת.
+                  </li>
+                  <li id="monitor-thread"><strong>Monitor Thread</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        משימת <a href="#freertos">FreeRTOS</a> ראשית שטוענת קונפיגורציה, מאמתת תקינות נתונים ב-<a
+                              href="#eeprom">EEPROM</a> באמצעות <a href="#crc">CRC</a>, מנהלת מצבי
+                        אבטחה, מפעילה דפוסי צופר/LED, כותבת לוגים ומפקחת על בריאות המשימות.</li>
+                  <li id="keypad-thread"><strong>Keypad Thread</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        סורקת את מטריצת המקשים ‎2×3 כל ‎40‎ מ״ש, מבצעת דה-באונס, מבדילה בין לחיצות קצרות לארוכות ומשגרת
+                        אירועי <code>KeypadMessage</code> ל-<a href="#monitor-thread">Monitor</a>.</li>
+                  <li id="ble-thread"><strong>BLE Thread</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מטפלת בסריקות כ-<a href="#ble-central">BLE Central</a>, בשיוכים, ביומני חיבורים ובהתמדה של
+                        כתובות/מספרים סידוריים ב-<a href="#eeprom">EEPROM</a>,
+                        תוך תיאום עם פריפריות Ruptela.</li>
+                  <li id="logger-thread"><strong>Logger Thread</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מרוקנת לוגים מושהים של <a href="#rtt">RTT</a> מתוך <code>leach/main.c</code>, כדי שפלט דיאגנוסטי
+                        יישאר לא חוסם גם
+                        כשהמערכת בעומס.</li>
+                  <li id="softdevice-task"><strong>SoftDevice Task</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        הקשר שנוצר דרך <code>nrf_sdh_freertos</code> ומטפל בחזרות הסטאק, ניהול מצבי פרסום, מו״מ פרמטרי
+                        חיבור ושירותי <a href="#dfu">DFU</a>.</li>
+            </ul>
+            <h2 id="קישוריות-ומסלולי-נתונים">קישוריות ומסלולי נתונים </h2>
+            <ul>
+                  <li id="ble-dual-role"><strong>תפקידי BLE Dual-Role</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        המקלדת פועלת במקביל כ-<a href="#ble-peripheral">BLE Peripheral</a> (מפרסמת שירותים מותאמים)
+                        וכ-<a href="#ble-central">BLE Central</a> (סורקת התקני leach
+                        ומודם Ruptela) כדי לשמר קישורים מוצפנים דו-כיווניים.</li>
+                  <li><strong>מודם Ruptela</strong><br>
+                        גשר BLE/GPRS מרוחק שמקבל זרמי לוגים וחבילות פקודה; <code>ble_task</code> מעביר פריימים
+                        ו-<code>Ruptela.c</code> מיישם עדכוני קונפיגורציה/זמן/סיסמה.</li>
+            </ul>
+            <h2 id="ממשק-חומרה-ו-hal">ממשק חומרה ו-HAL </h2>
+            <ul>
+                  <li id="bsp"><strong>BSP (Board Support Package)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        שכבה תוכנה שמספקת ממשק בין מערכת ההפעלה או הקושחה לבין החומרה הספציפית של הלוח. BSP כולל
+                        דרייברים, הגדרות פינים, קונפיגורציות שעונים ומיפוי פריפריות. ב-Cloud-Wise Keypad, ה-<a
+                              href="#hal">HAL</a> משמש כ-BSP
+                        שמתרגם את הפריפריות הלוגיות להשמות <a href="#gpio">GPIO</a> ספציפיות ב-<a
+                              href="#mcu-nrf52">nRF52</a> ומאפשר ניידות קוד בין
+                        פלטפורמות שונות.</li>
+                  <li id="hal"><strong>HAL (Hardware Abstraction Layer)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        שכבת <a href="#bsp">BSP</a> שמתרגמת פריפריות לוגיות להשמות <a href="#gpio">GPIO</a> ב-<a
+                              href="#mcu-nrf52">nRF52</a> ולידיות דרייברים.
+                        ה-<a href="#hal">HAL</a> מספק ממשק אחיד
+                        לפריפריות חומרה שונות ומאפשר ניידות קוד בין פלטפורמות שונות.
+                        <ul>
+                              <li><em><a href="#gpio">GPIO</a></em> – שולט בלדים, בממסר, בחיווי הצתה ובשורות/עמודות
+                                    המקלדת בעזרת עזרי פינים
+                                    סטנדרטיים.</li>
+                              <li><em><a href="#pwm">PWM</a></em> – מניע את מנגינות הצופר באמצעות <code>nrfx_pwm</code>.
+                              </li>
+                              <li><em><a href="#adc">SAADC</a></em> – מודד את מתח ה-<a href="#vdd">VDD</a> ואותות
+                                    אנלוגיים נוספים לצורכי בקרה.</li>
+                              <li><em><a href="#spi">SPI</a></em> – מתקשר עם ה-<a href="#eeprom">EEPROM</a> החיצוני ועם
+                                    פריפריות סריאליות נוספות.</li>
+                        </ul>
+                  </li>
+                  <li id="gpio"><strong>GPIO (General-Purpose Input/Output)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        פינים דיגיטליים שניתן להגדיר ככניסה או יציאה ולשלוט בהם תוכנתית. GPIO מאפשר קריאת מצב מתח
+                        (HIGH/LOW)
+                        או כתיבת מצב מתח לפין. ב-Cloud-Wise Keypad נעשה שימוש ב-GPIO לשליטה ב-LED-ים, בממסר, בחיווי הצתה
+                        ובסריקת מטריצת המקשים. כל פין GPIO יכול להיות מוגדר ככניסה עם Pull-up/Pull-down או כיציאה עם
+                        מצב Push-pull או Open-drain.</li>
+                  <li id="pwm"><strong>PWM (Pulse Width Modulation)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        טכניקה לשליטה בעוצמת אות על ידי שינוי רוחב הפולסים (Duty Cycle) תוך שמירה על תדירות קבועה. PWM
+                        משמש לשליטה בעוצמת אור של LED, מהירות מנועים, וסינתוז צלילים. ב-Cloud-Wise Keypad נעשה שימוש
+                        ב-PWM
+                        באמצעות <code>nrfx_pwm</code> כדי לסנתז מנגינות צופר מורכבות עם תדירויות וטונים שונים. ה-PWM
+                        מאפשר
+                        יצירת צלילים מדויקים ללא צורך ב-DAC.</li>
+                  <li id="adc"><strong>ADC (Analog-to-Digital Converter) / SAADC</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        ממיר אנלוגי-דיגיטלי שממיר אותות אנלוגיים (מתח רציף) לערכים דיגיטליים (מספרים). ב-nRF52 נקרא
+                        SAADC
+                        (Successive Approximation ADC). ב-Cloud-Wise Keypad נעשה שימוש ב-SAADC למדידת מתח ה-<a
+                              href="#vdd">VDD</a> (מתח
+                        האספקה) לצורכי ניטור מצב הסוללה ובקרת אנרגיה. ה-SAADC מספק רזולוציה של עד 14 ביט ומאפשר מדידות
+                        מדויקות של אותות אנלוגיים.</li>
+                  <li id="uart"><strong>UART (Universal Asynchronous Receiver-Transmitter)</strong> <a
+                              href="#תוכן-עניינים" style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        פרוטוקול תקשורת סריאלי אסינכרוני המשמש להעברת נתונים בין התקנים. UART משתמש בשני קווים: TX
+                        (Transmit)
+                        ו-RX (Receive), ואינו דורש קו שעון (Clock) משותף. UART נפוץ לתקשורת עם מחשבים, מודמים, חיישנים
+                        ומסכי LCD. ב-Cloud-Wise Keypad, UART יכול לשמש לתקשורת עם מודם Ruptela או כלי דיאגנוסטיקה, אם כי
+                        העדפה ניתנת ל-<a href="#rtt">RTT</a> לצורכי לוגינג בגלל המהירות והנוחות.</li>
+                  <li id="vdd"><strong>VDD</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מתח האספקה הראשי של ה-<a href="#mcu">MCU</a> והמערכת. VDD מסמל את מתח האספקה החיובי (בדרך כלל
+                        3.3V
+                        ב-nRF52). ב-Cloud-Wise Keypad נעשה שימוש ב-<a href="#adc">SAADC</a> למדידת מתח ה-VDD כדי לנטר את
+                        מצב הסוללה,
+                        לזהות בעיות אספקת חשמל ולבצע בקרת אנרגיה. מדידת VDD מאפשרת למערכת לזהות מתי הסוללה נמוכה או מתי
+                        יש בעיה באספקת החשמל.</li>
+                  <li id="drivers"><strong>Drivers</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מימושים קונקרטיים (<a href="#eeprom">EEPROM</a>, צופר, <a href="#adc">ADC</a> ועוד) שמספקים APIs
+                        בטוחים לשרשור עבור
+                        שכבות גבוהות לקריאת
+                        חיישנים, נגינה והתמדה.</li>
+                  <li id="spi"><strong>SPI (Serial Peripheral Interface)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        פרוטוקול תקשורת סריאלי סינכרוני המשמש לתקשורת בין התקנים אלקטרוניים. SPI משתמש ב-4 קווים
+                        עיקריים:
+                        <a href="#mosi">MOSI</a> (Master Out Slave In), <a href="#miso">MISO</a> (Master In Slave Out),
+                        <a href="#sck">SCK</a> (Clock) ו-CS (Chip Select).
+                        ב-Cloud-Wise
+                        Keypad נעשה שימוש ב-SPI לתקשורת עם ה-<a href="#eeprom">EEPROM</a> החיצוני (סדרת M95) לאחסון
+                        קונפיגורציה ונתונים
+                        מתמידים. ה-SPI מספק מהירות גבוהה יותר מ-I2C ומתאים ליישומים הדורשים העברת נתונים מהירה.
+                  </li>
+                  <li id="mosi"><strong>MOSI (Master Out Slave In)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        קו ב-<a href="#spi">SPI</a> שמעביר נתונים מה-Master (ה-<a href="#mcu">MCU</a>) ל-Slave (ההתקן
+                        החיצוני כמו <a href="#eeprom">EEPROM</a>).
+                        ב-Cloud-Wise Keypad, MOSI משמש לכתיבת נתונים ל-EEPROM החיצוני דרך פרוטוקול SPI.</li>
+                  <li id="miso"><strong>MISO (Master In Slave Out)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        קו ב-<a href="#spi">SPI</a> שמעביר נתונים מה-Slave (ההתקן החיצוני) ל-Master (ה-<a
+                              href="#mcu">MCU</a>). ב-Cloud-Wise Keypad,
+                        MISO משמש לקריאת נתונים מה-<a href="#eeprom">EEPROM</a> החיצוני דרך פרוטוקול SPI.</li>
+                  <li id="sck"><strong>SCK (Serial Clock)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        קו השעון ב-<a href="#spi">SPI</a> שמסנכרן את העברת הנתונים בין ה-Master ל-Slave. ה-Master מייצר
+                        את אות השעון
+                        וה-Slave קורא את הנתונים על פי קצב השעון. ב-Cloud-Wise Keypad, SCK מסנכרן את התקשורת עם ה-<a
+                              href="#eeprom">EEPROM</a>
+                        החיצוני ומאפשר העברת נתונים מהירה ואמינה.</li>
+                  <li id="freertos"><strong>FreeRTOS</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מערכת הפעלה <a href="#rtos">RTOS</a> קוד פתוח חינמית שפותחה על ידי Real Time Engineers Ltd.
+                        FreeRTOS מספקת סקדולר
+                        Preemptive, ניהול משימות, תורים, סמפורים, טיימרים ומנגנוני סנכרון נוספים. ב-Cloud-Wise Keypad
+                        נעשה שימוש
+                        ב-FreeRTOS כדי לנהל את המשימות השונות (<a href="#monitor-thread">Monitor</a>, <a
+                              href="#keypad-thread">Keypad</a>, <a href="#ble-thread">BLE</a>, <a
+                              href="#logger-thread">Logger</a>)
+                        בצורה מתואמת ומבטיחה תגובה מהירה לאירועי זמן-אמת. FreeRTOS תומכת במספר ארכיטקטורות MCU כולל ARM
+                        Cortex-M
+                        המשמש ב-nRF52.</li>
+                  <li id="rtt"><strong>RTT (Real-Time Transfer)</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מנגנון לוגינג של Segger שמאפשר העברת לוגים בזמן אמת מה-MCU למחשב דרך דיבאגר J-Link ללא צורך
+                        ב-UART
+                        או חיבורים נוספים. RTT משתמש בבאפרים קטנים ב-RAM ומאפשר העברת נתונים דו-כיוונית (לוגים מה-MCU
+                        ופקודות למחשב). ב-Cloud-Wise Keypad נעשה שימוש ב-RTT לצורכי דיאגנוסטיקה ופיתוח; גרסאות Release
+                        מסירות את רוב הלוגים כדי לחסוך בזיכרון ובתקציב ריצה. ה-<a href="#logger-thread">Logger
+                              Thread</a> מרוקנת את באפרי ה-RTT
+                        באופן אסינכרוני כדי לא לחסום את המשימות האחרות.</li>
+                  <li><strong>חיווי הצתה וממסר</strong><br>
+                        זוג קווי IO שמזהים מצב הצתה ומחליפים את מצב הממסר; משוכפל למאפייני BLE כדי שלקוחות מרוחקים יראו
+                        סטטוס בזמן אמת.</li>
+                  <li><strong>Watchdog ו-Tick של RTC</strong><br>
+                        <code>state_machine.c</code> מאכיל את ה-Watchdog כדי לאתחל בעת תקיעות ומפיק פולס RTC של ‎1‎Hz
+                        (<code>time_since_2020</code>) לתזמון ולחותמות זמן בלוגים.
+                  </li>
+            </ul>
+            <h2 id="כלים-ודיאגנוסטיקה">כלים ודיאגנוסטיקה </h2>
+            <ul>
+                  <li><strong>Segger Embedded Studio (SES)</strong><br>
+                        ה-IDE/Toolchain הנתמך על ידי Nordic; סקריפטים ב-<code>build/</code> מפעילים את SES כדי לקמפל,
+                        למזג את SoftDevice Hex ולארוז ארטיפקטים ל-Debug/Release.</li>
+                  <li id="rtt-logging"><strong>RTT Logging</strong> <a href="#תוכן-עניינים"
+                              style="font-size: 0.8em; color: #4a9eff;">↑</a><br>
+                        מנגנון <a href="#rtt">Real-Time Transfer</a> של Segger שמזרים לוגים בלי לחסום את ה-CPU; גרסאות
+                        Release מסירות את
+                        רוב הפלט כדי לחסוך בזיכרון ובתקציב ריצה.</li>
+            </ul>
+
+      </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

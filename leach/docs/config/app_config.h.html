@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>app_config.h Documentation</title>
+  </head>
+  <body>
+    <h1>app_config.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Project-specific configuration overrides for the Leach firmware. It layers
+      on top of shared configuration and defines BLE and scanning parameters.
+    </p>
+
+    <h2>Key configuration areas</h2>
+    <ul>
+      <li>BLE observer priority and log level.</li>
+      <li>Central/peripheral link counts.</li>
+      <li>GATT Queue enablement and sizing.</li>
+      <li>Scanning parameters and filter capacities.</li>
+    </ul>
+
+    <h2>Notable macros</h2>
+    <ul>
+      <li>Link counts: <code>NRF_SDH_BLE_CENTRAL_LINK_COUNT</code>, <code>NRF_SDH_BLE_PERIPHERAL_LINK_COUNT</code></li>
+      <li>GATT Queue sizing: <code>NRF_BLE_GQ_*</code></li>
+      <li>Scan params: <code>NRF_BLE_SCAN_*</code></li>
+      <li><code>RUPTELA_SERVICE_SIMULATION</code></li>
+      <li><code>MAX_TARGET_ADDRESSES</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Uses <code>shared_app_config.h</code> as a base and supports Nordic config tools.</p>
+  </body>
+</html>

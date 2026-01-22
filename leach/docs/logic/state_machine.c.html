@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>state_machine.c Documentation</title>
+  </head>
+  <body>
+    <h1>state_machine.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements a lightweight state/timekeeper module using the watchdog timer
+      and RTC. It tracks time since 2020 and triggers periodic monitoring.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize WDT and RTC.</li>
+      <li>Feed the watchdog from application logic.</li>
+      <li>Maintain <code>time_since_2020</code> (seconds).</li>
+      <li>Update <code>monitor_timer</code> and trigger monitor checks.</li>
+    </ul>
+
+    <h2>Key functions</h2>
+    <ul>
+      <li><code>state_machine_init</code></li>
+      <li><code>feed_watchdog</code> / <code>state_machine_feed_watchdog</code></li>
+      <li><code>get_time_in_seconds</code></li>
+    </ul>
+
+    <h2>RTC handler</h2>
+    <ul>
+      <li>Uses RTC2 with prescaler 4095.</li>
+      <li>Increments time every 8 ticks.</li>
+      <li>Logs time every 10 seconds.</li>
+      <li>Triggers monitor checks at <code>MONITOR_TEST_TIME</code>.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Time counter is local unless set elsewhere.</p>
+  </body>
+</html>

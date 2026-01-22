@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_task.h Documentation</title>
+  </head>
+  <body>
+    <h1>ble_task.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public interface for the BLE task and connection management utilities.</p>
+
+    <h2>Key types</h2>
+    <p><code>PeripheralType</code> defines the classification of connected peripherals.</p>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>ble_thread</code> and <code>init_ble_task</code></li>
+      <li><code>activate_bonding_state</code> / <code>de_activate_bonding_state</code></li>
+      <li><code>disconnect_and_delete_all_peripheral</code></li>
+      <li><code>save_bondings</code></li>
+      <li><code>print_address</code></li>
+      <li><code>connections_state_lock</code> / <code>connections_state_unlock</code></li>
+      <li><code>set_ignition_state</code></li>
+      <li><code>blink_bonded_device_count</code></li>
+      <li><code>setLeachFound</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p><code>is_peripheral_recognized</code> is declared but not defined here.</p>
+  </body>
+</html>

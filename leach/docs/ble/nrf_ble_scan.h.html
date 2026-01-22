@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nrf_ble_scan.h Documentation</title>
+  </head>
+  <body>
+    <h1>nrf_ble_scan.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public API and types for the Nordic BLE scanning module.</p>
+
+    <h2>Key types</h2>
+    <ul>
+      <li><code>nrf_ble_scan_t</code>: scanning instance state.</li>
+      <li><code>nrf_ble_scan_init_t</code>: initialization parameters.</li>
+      <li><code>scan_evt_t</code>: scan event payload.</li>
+      <li><code>nrf_ble_scan_filters_t</code>: filter configuration.</li>
+    </ul>
+
+    <h2>Filter types and modes</h2>
+    <ul>
+      <li>Name, short name, address, UUID, appearance.</li>
+      <li><code>NRF_BLE_SCAN_ALL_FILTER</code> enables match-all mode.</li>
+      <li>Filter capacities are limited by <code>NRF_BLE_SCAN_*_CNT</code>.</li>
+    </ul>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>nrf_ble_scan_init</code></li>
+      <li><code>nrf_ble_scan_start</code></li>
+      <li><code>nrf_ble_scan_stop</code></li>
+      <li><code>nrf_ble_scan_params_set</code></li>
+      <li><code>nrf_ble_scan_filter_set</code></li>
+      <li><code>nrf_ble_scan_filters_enable</code></li>
+      <li><code>nrf_ble_scan_filters_disable</code></li>
+      <li><code>nrf_ble_scan_all_filter_remove</code></li>
+      <li><code>nrf_ble_scan_filter_get</code></li>
+      <li><code>nrf_ble_scan_on_ble_evt</code></li>
+      <li><code>nrf_ble_scan_copy_addr_to_sd_gap_addr</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Provides the <code>NRF_BLE_SCAN_DEF</code> macro for instance registration.</p>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>custom_board.h Documentation</title>
+  </head>
+  <body>
+    <h1>custom_board.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Board selection wrapper for the Leach custom hardware. It includes shared
+      board definitions and validates the selected board revision.
+    </p>
+
+    <h2>Behavior</h2>
+    <ul>
+      <li>Includes <code>shared_custom_board.h</code>.</li>
+      <li>Checks <code>BOARD_CUSTOM</code> and validates known revisions.</li>
+      <li>Raises a preprocessor error for unknown revisions.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Currently recognizes <code>LEACH_REV_1</code> as a valid revision.</p>
+  </body>
+</html>

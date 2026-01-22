@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_lbs_c.h Documentation</title>
+  </head>
+  <body>
+    <h1>ble_lbs_c.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public API and type definitions for the LED Button Service (LBS) client.</p>
+
+    <h2>UUID and characteristic IDs</h2>
+    <ul>
+      <li><code>LBS_UUID_BASE</code> and <code>LBS_UUID_SERVICE</code></li>
+      <li><code>LBS_UUID_BUTTON_CHAR</code>, <code>LBS_UUID_LED_CHAR</code></li>
+      <li>Simulation-only: <code>LBS_UUID_COMMAND_CHAR</code>, <code>LBS_UUID_LOG_CHAR</code></li>
+    </ul>
+
+    <h2>Key types</h2>
+    <ul>
+      <li><code>ble_lbs_c_t</code>: client instance state.</li>
+      <li><code>lbs_db_t</code>: peer handles for characteristics.</li>
+      <li><code>ble_lbs_c_evt_t</code>: events for discovery and notifications.</li>
+    </ul>
+
+    <h2>Public API</h2>
+    <ul>
+      <li><code>ble_lbs_c_init</code></li>
+      <li><code>ble_lbs_c_on_ble_evt</code></li>
+      <li><code>ble_lbs_on_db_disc_evt</code></li>
+      <li><code>ble_lbs_c_button_notif_enable</code></li>
+      <li><code>ble_lbs_c_handles_assign</code></li>
+      <li><code>ble_lbs_led_status_send</code></li>
+      <li><code>ble_lbs_log_send</code></li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Simulation-specific fields are guarded by <code>RUPTELA_SERVICE_SIMULATION</code>.</p>
+  </body>
+</html>

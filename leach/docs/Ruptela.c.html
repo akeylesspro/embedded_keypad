@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Ruptela.c Documentation</title>
+  </head>
+  <body>
+    <h1>Ruptela.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the Ruptela service simulation logic used when
+      <code>RUPTELA_SERVICE_SIMULATION</code> is enabled. It parses inbound
+      commands, manages a security state, and sends structured log records.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Build and send Ruptela log records.</li>
+      <li>Decode command payloads and dispatch actions.</li>
+      <li>Maintain a semaphore-protected security state.</li>
+      <li>Validate and update keypad password configuration.</li>
+      <li>Control pairing enable/disable flow via a flag.</li>
+    </ul>
+
+    <h2>Key functions</h2>
+    <ul>
+      <li><code>ruptela_send_log</code>: builds a timestamped log record and sends it.</li>
+      <li><code>ruptela_decode_command</code>: parses 16-byte commands and applies actions.</li>
+      <li><code>read_new_security_state</code>: reads and clears the current state.</li>
+      <li><code>getEnablePairing</code> / <code>resetEnablePairing</code>: pairing flag access.</li>
+      <li><code>is_valid_password</code>: checks password digits 1-5.</li>
+    </ul>
+
+    <h2>Synchronization</h2>
+    <ul>
+      <li><code>security_state_semaphore</code> guards the shared security state.</li>
+    </ul>
+
+    <h2>Dependencies and interactions</h2>
+    <ul>
+      <li>Uses configuration save/reset APIs.</li>
+      <li>Triggers buzzer feedback on success events.</li>
+      <li>Logs via the NRF logging system.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Compiled only when <code>RUPTELA_SERVICE_SIMULATION</code> is defined.</li>
+      <li>Command payload layout is fixed and must match sender format.</li>
+    </ul>
+  </body>
+</html>

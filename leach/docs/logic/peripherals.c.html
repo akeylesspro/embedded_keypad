@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>peripherals.c Documentation</title>
+  </head>
+  <body>
+    <h1>peripherals.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements board-level peripheral helpers for the keypad: initialization,
+      LEDs, ignition control, and basic sensor readings.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize HAL and read device serial number.</li>
+      <li>Control LED outputs and ignition switch state.</li>
+      <li>Read temperature and battery voltage.</li>
+      <li>Provide helpers for LED control patterns.</li>
+    </ul>
+
+    <h2>Key functions</h2>
+    <ul>
+      <li><code>peripherals_init</code></li>
+      <li><code>peripherals_read_temperature</code></li>
+      <li><code>peripherals_read_vdd</code></li>
+      <li><code>peripherals_read_battery_level</code></li>
+      <li><code>peripheral_turn_on_all_led</code> / <code>peripheral_turn_off_all_led</code></li>
+      <li><code>peripheral_is_switch_ignition_on</code></li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Uses HAL and configuration helpers for ADC and battery conversion.</p>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Some event hooks are commented out.</li>
+      <li>LEDs are active-low (clear pin to turn on).</li>
+    </ul>
+  </body>
+</html>

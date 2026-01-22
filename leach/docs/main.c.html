@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>main.c Documentation</title>
+  </head>
+  <body>
+    <h1>main.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      This file is the application entry point for the Leach keypad firmware.
+      It initializes core modules (logging, clocks, timers), sets up tasks and
+      synchronization objects, and starts the FreeRTOS scheduler.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize logging and low-frequency clock sources.</li>
+      <li>Track reset count across resets using <code>.non_init</code> memory.</li>
+      <li>Initialize system timers and peripherals.</li>
+      <li>Create core FreeRTOS tasks (logger, monitor, BLE, keypad).</li>
+      <li>Initialize synchronization primitives (semaphores and event groups).</li>
+      <li>Start the FreeRTOS scheduler and handle fatal states.</li>
+    </ul>
+
+    <h2>Key flow in <code>main()</code></h2>
+    <ul>
+      <li>Initialize logging and the clock driver.</li>
+      <li>Detect first power-up vs. warm reset using <code>test_value</code>.</li>
+      <li>Seed time on first power-up.</li>
+      <li>Create the logger task for deferred logging.</li>
+      <li>Enable deep sleep mode for the MCU.</li>
+      <li>Initialize modules and print firmware metadata.</li>
+      <li>Initialize peripherals and state machine logic.</li>
+      <li>Create monitor, BLE, and keypad tasks.</li>
+      <li>Create semaphores/event groups and initialize BLE/config/keypad tasks.</li>
+      <li>Start the FreeRTOS scheduler.</li>
+    </ul>
+
+    <h2>Important functions</h2>
+    <ul>
+      <li><code>assert_nrf_callback</code>: SoftDevice assert handler.</li>
+      <li><code>modules_init</code>: Initializes the app timer module.</li>
+      <li><code>sleep_mode_enter</code>: Enters system-off mode.</li>
+      <li><code>log_init</code>: Initializes NRF logging backends.</li>
+      <li><code>logger_thread</code>: Flushes logs and suspends.</li>
+      <li><code>vApplicationIdleHook</code>: Resumes logger from idle.</li>
+      <li><code>init_tasks</code>: Creates semaphores/event groups and inits tasks.</li>
+      <li><code>send_event_from_isr</code>: Sets event bits from ISR safely.</li>
+    </ul>
+
+    <h2>Concurrency and synchronization</h2>
+    <ul>
+      <li>Binary semaphores for clock, watchdog monitor, and connection list.</li>
+      <li>Event groups for ignition and BLE connection changes.</li>
+    </ul>
+
+    <h2>Notable globals</h2>
+    <ul>
+      <li><code>reset_count</code> and <code>test_value</code> persist across resets.</li>
+      <li><code>power_up</code> indicates first boot after power-cycle.</li>
+      <li>Task handles for logger, BLE, monitor, and keypad threads.</li>
+    </ul>
+
+    <h2>Dependencies and interactions</h2>
+    <ul>
+      <li>BLE initialization flows into the BLE task and service manager.</li>
+      <li>Peripheral initialization uses HAL and the buzzer driver.</li>
+      <li>State machine initialization configures WDT/RTC timekeeping.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Some log calls are commented or marked as placeholders.</li>
+      <li>Task stack sizes are fixed; ensure FreeRTOS config matches.</li>
+    </ul>
+  </body>
+</html>

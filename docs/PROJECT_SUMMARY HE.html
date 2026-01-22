@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <title>PROJECT_SUMMARY HE</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet"
+            href="file:///c:\Users\avrah\.cursor\extensions\shd101wyy.markdown-preview-enhanced-0.8.20-universal\crossnote\dependencies\katex\katex.min.css">
+
+
+
+
+
+      <link rel="stylesheet" href="dark-theme.css">
+
+
+</head>
+
+<body for="html-export">
+
+
+      <div class="crossnote markdown-preview  ">
+
+            <h1 id="cloud-wise-ble-keypad--תקציר-הפרויקט">Cloud-Wise BLE Keypad – תקציר הפרויקט </h1>
+            <h2 id="מה-הפרויקט-עושה">מה הפרויקט עושה </h2>
+            <p>הרפוזיטורי הזה מכיל את הקושחה היצרנית של מקלדת ה-BLE של Cloud-Wise שרצה על בקר Nordic nRF52. המקלדת פועלת
+                  גם כ-BLE Peripheral (שמשדר את השירות שלה) וגם כ-BLE Central שמנהל קישורים מוצפנים ומאושרים מראש
+                  לאביזרי “leach” ולמודם הסלולרי של Ruptela. ברמה המקומית היא אחראית על מטריצת חמישה מקשים, נורות LED
+                  (RGB/סגמנטים), צופר, ממסר, חיווי הצתה ו-EEPROM חיצוני דרך SPI. הקושחה מריצה FreeRTOS מעל SoftDevice
+                  S132 של Nordic, מוסיפה Bootloader DFU מאובטח, ומתזמרת אינטראקציות עם המקלדת, מצבי אבטחה, טלמטריה
+                  ושליטה מרחוק.</p>
+            <h2 id="פלטפורמת-חומרה-ותוכנה">פלטפורמת חומרה ותוכנה </h2>
+            <ul>
+                  <li><strong>MCU וסטאק</strong>: Nordic nRF52 יחד עם SoftDevice S132 ו-FreeRTOS
+                        (<code>FreeRTOS-Kernel/</code>) שמספק את הסקדולר וניהול צריכת החשמל במצבי מנוחה.</li>
+                  <li><strong>Bootloader</strong>: מימוש DFU מאובטח תחת <code>bootloader/</code> עם מפתח ציבורי
+                        (<code>bootloader/dfu_public_key.c</code>) שמאפשר עדכוני קושחה אלחוטיים ומאומתים.</li>
+                  <li><strong>תמיכת לוח ומנהלי התקנים</strong>: בתיקייה <code>cloud-wise-sdk/hal</code> מוגדר מיפוי
+                        הפינים, קונפיגורציית SAADC, PWM ו-SPI, וכן פונקציות HAL משותפות. תחת
+                        <code>cloud-wise-sdk/drivers</code> נמצאים מנהלי EEPROM וצופר לשימוש חוזר.
+                  </li>
+                  <li><strong>שכבת האפליקציה</strong>: <code>leach/</code> מכילה את משימות ה-FreeRTOS הייעודיות למקלדת,
+                        שירותי ה-BLE, גשר Ruptela והדבק של מכונת המצבים.</li>
+                  <li><strong>SDK-ים חיצוניים</strong>: התיקייה <code>nrf5-sdk/</code> מספקת כותרות ופרופילים של BLE יחד
+                        עם מנהלי חומרה ברמת נמוכה, ו-FreeRTOS ונדור בפרויקט כדי להבטיח בנייה דטרמיניסטית.</li>
+                  <li><strong>נכסי build</strong>: קובץ הפרויקט <code>Keypad.emProject</code> (ל-Segger Embedded Studio)
+                        וסקריפטי <code>build/keypad_build-{debug,release}.bat</code> שמחברים את קוד האפליקציה עם
+                        ה-SoftDevice ומוודאים ארטיפקטים גרסתיים וכרונולוגיים.</li>
+            </ul>
+            <h2 id="סקירת-ארכיטקטורת-התוכנה">סקירת ארכיטקטורת התוכנה </h2>
+            <table>
+                  <thead>
+                        <tr>
+                              <th>שכבה</th>
+                              <th>מיקום</th>
+                              <th>אחריות עיקריות</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                              <td>Bootloader</td>
+                              <td><code>bootloader/</code></td>
+                              <td>DFU מאובטח דרך BLE, אימות אימג'ים, חיווי LED בזמן עדכון.</td>
+                        </tr>
+                        <tr>
+                              <td>HAL ומנהלי התקנים</td>
+                              <td><code>cloud-wise-sdk/hal</code>, <code>cloud-wise-sdk/drivers</code></td>
+                              <td>אבסטרקציה של GPIO/צריכת חשמל, נגינות צופר ב-PWM, גישה ל-EEPROM, עזרי watchdog.</td>
+                        </tr>
+                        <tr>
+                              <td>לוגיקה משותפת</td>
+                              <td><code>cloud-wise-sdk/logic</code></td>
+                              <td>התמדה של קונפיגורציה, סורק מקלדת, עזרי BLE, שליטת הצתה, ניטור/Watchdog למשימות והגדרות
+                                    אירועים.</td>
+                        </tr>
+                        <tr>
+                              <td>אפליקציה</td>
+                              <td><code>leach/</code></td>
+                              <td>משימות FreeRTOS העיקריות (<code>monitor</code>, <code>keypad</code>, <code>ble</code>,
+                                    <code>logger</code>), ניהול שירותי BLE, גשר לפרוטוקול Ruptela וחיווט מכונת המצבים.
+                              </td>
+                        </tr>
+                        <tr>
+                              <td>SDK צד שלישי</td>
+                              <td><code>nrf5-sdk/</code>, <code>FreeRTOS-Kernel/</code></td>
+                              <td>סטאק BLE של Nordic, ספריות פריפריות וקוד הליבה של ה-RTOS.</td>
+                        </tr>
+                  </tbody>
+            </table>
+            <h2 id="מערך-פיצרים">מערך פיצ'רים </h2>
+            <h3 id="אבטחה-ושליטה-בגישה">אבטחה ושליטה בגישה </h3>
+            <ul>
+                  <li>מנוע אבטחה רב-מצבי (דרוך, משוחרר, מצב גראז', נעול, החלפת סיסמה) שמנוהל ב-<code>monitor.c</code>
+                        וכולל טיימרים הניתנים להגדרה (למשל שחרור ל-2 דקות, חסימה ל-3 דקות).</li>
+                  <li>ניהול סיסמאות דרך קלט המקלדת או פקודות Ruptela מרחוק (החלפה, שליפת הנוכחית, חזרה לברירת מחדל).
+                  </li>
+                  <li>מצבי גראז' לניקוי רשימת ההתקנים המקושרים, לרישום התקנים חדשים או לשכפול רשימת חיבורים נוכחית אל
+                        ה-EEPROM.</li>
+                  <li>ניטור בריאות משימות מגובה Watchdog ואיפוס אוטומטי אם סטטוס החיבורים ב-BLE אינו תואם את הרשימה
+                        המתמידה.</li>
+                  <li>יציאת ממסר וחיווי הצתה המשויכים למצב האבטחה, כולל התרעות כשההצתה פעילה בזמן שהמערכת דרוכה.</li>
+            </ul>
+            <h3 id="ממשק-משתמש-ומשוב">ממשק משתמש ומשוב </h3>
+            <ul>
+                  <li>סריקה של מטריצת חמישה מקשים כל 40 מילי-שניות עם דה-באונס, הבחנה בין לחיצה קצרה לארוכה ושליחת
+                        הודעות דרך תורים.</li>
+                  <li>תבניות LED שמציגות מצב אבטחה, מספר התקנים מקושרים (לחיצה ארוכה על מקש 2), פעולות גראז' והתקדמות
+                        בשיוך התקנים (מספר ההבהובים תואם למספר ההתקנים שנקלטו).</li>
+                  <li>מנגינות צופר עשירות לאירועי הצלחה, כישלון, נעילה, איפוס, הדלקה, בדיקה ו-Watchdog באמצעות מנהל
+                        ה-PWM.</li>
+                  <li>התרעות המבוססות על הצתה: צפצופים ולוגים מחזוריים כאשר ההצתה פעילה אך חסרים פריפריות נדרשות.</li>
+            </ul>
+            <h3 id="קישוריות-ble-ושירותים-מרוחקים">קישוריות BLE ושירותים מרוחקים </h3>
+            <ul>
+                  <li>פעולה דו-תפקידית: משדרת כ-<code>CW-RXXXDDDDDDD-AYY</code> ומבצעת סריקות כ-Central עבור פריפריות
+                        Cloud-Wise ומודמי Ruptela.</li>
+                  <li>UUID שירות מותאם באורך 128 ביט, מאפיין הצתה (קריאה/כתיבה/נוטיפיקציה), מאפייני פקודות/לוגים ושימוש
+                        ב-Device Information Service לזיהוי התקנים.</li>
+                  <li>רשימת שיוכים שנשמרת ב-EEPROM עם מסנני Whitelist ו-UUID; הקושחה מסרבת להתחבר להתקנים שאינם מאושרים
+                        אלא אם מצב גראז' מופעל.</li>
+                  <li>תמיכה בשלושה התקנים מקבילים, הבחנה בין מודם ל-leach, ואיפוסים לאחר שיוך כדי לשפר יציבות חיבור.
+                  </li>
+                  <li>קרסי העברת קבצים/לוגים יחד עם ערוץ פקודות בסגנון UART מעל BLE לצורך דיאגנוסטיקה ופקודות שירות.
+                  </li>
+            </ul>
+            <h3 id="קונפיגורציה-והתמדה">קונפיגורציה והתמדה </h3>
+            <ul>
+                  <li>בלוקי קונפיגורציה נשמרים ב-EEPROM עם אימות CRC, שחזור לברירת מחדל ופונקציות גישה עדינות
+                        (<code>cloud-wise-sdk/logic/configuration.c</code>).</li>
+                  <li>אחסון כתובות ההתקנים המשויכים, מספרי סידורי באורך 16 בייט, הגדרות ממסר, דגלי גראז' ומצב נעילה.
+                  </li>
+                  <li>עזרי פלאש פנימיים שמוכנים לקבצים גדולים יותר או לבועות פרמטרים (<code>flash_data.h</code>).</li>
+            </ul>
+            <h3 id="ניטור-לוגים-ודיאגנוסטיקה">ניטור, לוגים ודיאגנוסטיקה </h3>
+            <ul>
+                  <li><code>monitor_thread</code> מאתחלת את החומרה, מאמתת את תקינות ה-EEPROM, אוכפת מעבר בין מצבי אבטחה
+                        ומתזמנת לוגי Keep-Alive (כולל מקבצים אחרי איפוס).</li>
+                  <li>מדידת זמן באמצעות RTC (<code>state_machine.c</code>) מאפשרת חותמות זמן ולוגים רציפים.</li>
+                  <li>הזרמת לוגים דרך מאפיין BLE ל-Ruptela עבור אירועי Watchdog, הצתה, שינויי סיסמה ותוצאות שיוך.</li>
+                  <li>מסלול פקודות מרחוק (דרך Ruptela או מאפיין פקודות ב-BLE) לפעולות דריכה/שחרור, ניהול סיסמאות והחזרה
+                        לברירת מחדל.</li>
+            </ul>
+            <h3 id="bootloader-וזרימת-עדכונים">Bootloader וזרימת עדכונים </h3>
+            <ul>
+                  <li>Bootloader DFU מאובטח מאפשר עדכונים מוצפנים Over-The-Air; קבצי XML תחת <code>config/</code>
+                        מסנכרנים את פריסת הפלאש בין הבוטלואדר לאפליקציה.</li>
+                  <li>צופה DFU מחבר בין LED/צופר לסטטוס העדכון, ו-<code>readme.txt</code> מתעד את היסטוריית הגרסאות החל
+                        מ-1.0.8.</li>
+            </ul>
+            <h3 id="build-ופריסה">Build ופריסה </h3>
+            <ul>
+                  <li>סקריפטי Batch מקבלים גרסת סמן, מפעילים את Segger Embedded Studio ומארזים את ה-SoftDevice יחד עם
+                        האפליקציה לגרסת Release או Debug (עם RTT ב-Debug).</li>
+                  <li>גרסאות Release מכבות לוגים ליציבות, בעוד Debug משאירות RTT לצורכי מעבדה.</li>
+                  <li><code>readme.txt</code> מסכם גם את מבנה מאפייני ה-BLE, פורמט הפרסום והסוגיות הפתוחות.</li>
+            </ul>
+            <h2 id="תהליך-פעולה-ברמת-על">תהליך פעולה (ברמת על) </h2>
+            <ol>
+                  <li><strong>Boot ואתחול</strong>: <code>main.c</code> מפעיל שעונים, לוגינג, פריפריות ו-Watchdog
+                        למשימות, ואז יוצר את משימות ה-FreeRTOS.</li>
+                  <li><strong>תפקידי משימות</strong>:
+                        <ul>
+                              <li><code>monitor_thread</code>: הלב של המערכת—מטפל במעברי מצב, שיוכי BLE, שליטה
+                                    בהצתה/ממסר ותזמור איפוסים ולוגים.</li>
+                              <li><code>keypad_thread</code>: סורק את המקשים, שומר על תבניות ה-LED ומדווח אירועי משתמש.
+                              </li>
+                              <li><code>ble_thread</code>: מנהל סריקות, סינון, שיוך, תורים וגשר Ruptela.</li>
+                              <li><code>logger_thread</code> ומשימת SoftDevice: מרוקנים את באפרי הלוג ומטפלים בקולבקים
+                                    של ה-BLE ללא חסימת האפליקציה.</li>
+                        </ul>
+                  </li>
+                  <li><strong>מסלולי מידע</strong>: אירועי מקלדת עוברים ל-Monitor שמעדכן את מצב האבטחה ויכול להפעיל
+                        נוטיפיקציות או לוגים; חיבורי BLE מתויקים ב-EEPROM, ופקודות מרוחקות מגיעות מרופטלה דרך תורי BLE
+                        אל מכונת המצבים.</li>
+            </ol>
+            <p>עם המסמך הזה והפירוט ב-<code>PROJECT_OVERVIEW.md</code>, ניתן לעקוב אחרי כל פיצ'ר—ממחוות מקלדת ועד פקודות
+                  מרחוק—לאורך כל קושחת Cloud-Wise BLE Keypad.</p>
+
+      </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>version.h Documentation</title>
+  </head>
+  <body>
+    <h1>version.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Defines firmware identity information used in BLE advertising and DIS
+      characteristics.
+    </p>
+
+    <h2>Key macros</h2>
+    <ul>
+      <li><code>DEVICE_NAME</code></li>
+      <li><code>MANUFACTURER_NAME</code></li>
+      <li><code>MODEL_NUM</code> and <code>HARDWARE_REV</code></li>
+      <li><code>FIRMWARE_REV</code></li>
+    </ul>
+
+    <h2>Version history</h2>
+    <p>
+      Contains a detailed commented history of firmware revisions. The active
+      revision is the single uncommented <code>FIRMWARE_REV</code>.
+    </p>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>Board selection affects model and hardware revision strings.</li>
+      <li><code>version[]</code> is declared externally for runtime use.</li>
+    </ul>
+  </body>
+</html>

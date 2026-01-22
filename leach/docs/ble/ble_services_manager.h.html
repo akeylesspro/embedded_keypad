@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_services_manager.h Documentation</title>
+  </head>
+  <body>
+    <h1>ble_services_manager.h</h1>
+
+    <h2>Purpose</h2>
+    <p>Public interface for BLE services management.</p>
+
+    <h2>Public API</h2>
+    <ul>
+      <li>Initialization: <code>ble_services_init_0</code>, <code>ble_services_init_peripheral</code>, <code>ble_services_init_central</code></li>
+      <li>Advertising: <code>ble_services_advertising_start</code></li>
+      <li>Scanning: <code>scan_start</code>, <code>scan_stop</code>, <code>scan_init_by_white_list</code>, <code>scan_init_by_uuid</code></li>
+      <li>Status: <code>ble_services_is_connected</code></li>
+      <li>Utility: <code>decode_peripheral_device_by_dis</code></li>
+    </ul>
+
+    <h2>Data structures</h2>
+    <p>
+      <code>ble_peripheral_info_t</code> tracks ignition state, connection time,
+      peer address, connection handle, and peripheral type.
+    </p>
+
+    <h2>Dependencies</h2>
+    <p>Relies on BLE GAP and DIS types.</p>
+
+    <h2>Notes</h2>
+    <p><code>ble_services_init_peripheral</code> is declared but implemented elsewhere.</p>
+  </body>
+</html>

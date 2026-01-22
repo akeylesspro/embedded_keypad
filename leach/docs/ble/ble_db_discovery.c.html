@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_db_discovery.c Documentation</title>
+  </head>
+  <body>
+    <h1>ble_db_discovery.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements Nordic's Database Discovery module for GATT service discovery
+      on a peer device. It discovers services, characteristics, and descriptors
+      and forwards results to registered application handlers.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Maintain a registry of service UUIDs and a shared event handler.</li>
+      <li>Start primary service discovery and iterate over services.</li>
+      <li>Discover characteristics and descriptors within each service.</li>
+      <li>Collect handles into a <code>ble_gatt_db_srv_t</code> structure.</li>
+      <li>Notify the application on completion or errors.</li>
+    </ul>
+
+    <h2>Core flow</h2>
+    <ul>
+      <li>Initialize with <code>ble_db_discovery_init</code>.</li>
+      <li>Register UUIDs via <code>ble_db_discovery_evt_register</code>.</li>
+      <li>Start discovery using <code>ble_db_discovery_start</code>.</li>
+      <li>Handle GATT responses in <code>ble_db_discovery_on_ble_evt</code>.</li>
+    </ul>
+
+    <h2>Key helpers</h2>
+    <ul>
+      <li><code>registered_handler_get/set</code></li>
+      <li><code>characteristics_discover</code></li>
+      <li><code>descriptors_discover</code></li>
+      <li><code>discovery_error_handler</code></li>
+    </ul>
+
+    <h2>Events</h2>
+    <ul>
+      <li><code>BLE_DB_DISCOVERY_COMPLETE</code></li>
+      <li><code>BLE_DB_DISCOVERY_SRV_NOT_FOUND</code></li>
+      <li><code>BLE_DB_DISCOVERY_ERROR</code></li>
+      <li><code>BLE_DB_DISCOVERY_AVAILABLE</code></li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Uses the GATT queue module and SoftDevice GATT APIs.</p>
+
+    <h2>Notes</h2>
+    <p>Discovery depth is limited by configured maximum service/character counts.</p>
+  </body>
+</html>

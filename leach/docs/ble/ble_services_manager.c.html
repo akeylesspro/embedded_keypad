@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_services_manager.c Documentation</title>
+  </head>
+  <body>
+    <h1>ble_services_manager.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Central module that initializes and manages BLE services, scanning,
+      discovery, and connections. It coordinates advertising, GAP/GATT setup,
+      and multiple central links.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize SoftDevice, BLE stack, GAP, GATT, and advertising.</li>
+      <li>Manage scanning with UUID and optional MAC address filtering.</li>
+      <li>Handle BLE events for connections, disconnections, and timeouts.</li>
+      <li>Coordinate DB discovery, LBS client, and DIS client.</li>
+      <li>Dispatch connection state changes to the system.</li>
+      <li>Send ignition state and logs to connected peripherals.</li>
+    </ul>
+
+    <h2>Key initialization flow</h2>
+    <ul>
+      <li><code>ble_services_init_0</code>: enable SoftDevice and BLE stack.</li>
+      <li><code>ble_services_init_central</code>: set up GATT, discovery, clients, scanning.</li>
+      <li><code>ble_services_advertising_start</code>: start fast advertising.</li>
+    </ul>
+
+    <h2>Connection handling</h2>
+    <ul>
+      <li>Handles connect/disconnect, timeouts, and PHY updates.</li>
+      <li>Starts DB discovery immediately after connection.</li>
+    </ul>
+
+    <h2>Scanning and filtering</h2>
+    <ul>
+      <li><code>scan_init_by_uuid</code> uses the Leach service UUID.</li>
+      <li><code>scan_init_by_white_list</code> uses stored MAC filters.</li>
+      <li><code>scan_start</code> and <code>scan_stop</code> control scanning.</li>
+    </ul>
+
+    <h2>Discovery and clients</h2>
+    <ul>
+      <li>DB discovery forwards to LBS and DIS client handlers.</li>
+      <li>DIS reads are used to classify peripheral types.</li>
+    </ul>
+
+    <h2>Data and state</h2>
+    <ul>
+      <li>Event group <code>event_ble_connection_changed</code> signals changes.</li>
+      <li><code>current_conn_info</code> stores active connection metadata.</li>
+      <li><code>use_mac_address_filter</code> toggles address filtering.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>
+      The module mixes central and peripheral concerns and contains several
+      project-specific behaviors.
+    </p>
+  </body>
+</html>

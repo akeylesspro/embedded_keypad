@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>nrf_ble_gq.c Documentation</title>
+  </head>
+  <body>
+    <h1>nrf_ble_gq.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the Nordic BLE GATT Queue (GQ). It queues and serializes GATT
+      client/server requests to avoid SoftDevice busy errors and manage payloads.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Queue GATT operations per connection.</li>
+      <li>Allocate and free memory for write and HVX payloads.</li>
+      <li>Retry or defer requests when SoftDevice is busy.</li>
+      <li>Process queued requests on relevant BLE events.</li>
+    </ul>
+
+    <h2>Key behaviors</h2>
+    <ul>
+      <li><code>nrf_ble_gq_item_add</code> queues or sends immediately.</li>
+      <li><code>queue_process</code> dispatches the next queued request.</li>
+      <li><code>nrf_ble_gq_conn_handle_register</code> registers connections.</li>
+      <li><code>nrf_ble_gq_on_ble_evt</code> processes queues on events.</li>
+    </ul>
+
+    <h2>Request types</h2>
+    <ul>
+      <li>GATTC read/write</li>
+      <li>Primary service discovery</li>
+      <li>Characteristic and descriptor discovery</li>
+      <li>GATTS HVX (notify/indicate)</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <p>Standard Nordic SDK implementation with logging enabled.</p>
+  </body>
+</html>

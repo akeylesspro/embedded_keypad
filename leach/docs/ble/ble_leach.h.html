@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_leach.h Documentation</title>
+  </head>
+  <body>
+    <h1>ble_leach.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Declares constants related to the Leach custom BLE service, including
+      characteristic sizes and ignition bit flags.
+    </p>
+
+    <h2>Characteristic size limits</h2>
+    <ul>
+      <li><code>COMMAND_CHAR_MAX_LEN</code> (64)</li>
+      <li><code>ACC_CHAR_MAX_LEN</code> (16)</li>
+      <li><code>EVENTS_CHAR_MAX_LEN</code> (64)</li>
+      <li><code>MEASURE_CHAR_MAX_LEN</code> (16)</li>
+      <li><code>STATUS_CHAR_MAX_LEN</code> (32)</li>
+      <li><code>IGNITION_CHAR_MAX_LEN</code> (4)</li>
+    </ul>
+
+    <h2>Ignition bit positions</h2>
+    <ul>
+      <li><code>IGNITION_BIT_SWITCH</code> (0)</li>
+      <li><code>IGNITION_BIT_SWITCH_EN</code> (1)</li>
+      <li><code>IGNITION_BIT_RELAY_STATE</code> (2)</li>
+      <li><code>IGNITION_BIT_RELAY_STATE_EN</code> (3)</li>
+      <li><code>IGNITION_BIT_CMD_CLEAR_ALL</code> (8)</li>
+      <li><code>IGNITION_BIT_CMD_DEFAULT_PARAMS</code> (9)</li>
+      <li><code>IGNITION_BIT_CMD_RESET</code> (10)</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Includes BLE headers and SoftDevice configuration.</p>
+
+    <h2>Notes</h2>
+    <p>This header defines constants only.</p>
+  </body>
+</html>

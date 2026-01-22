@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_dis_c.c Documentation</title>
+  </head>
+  <body>
+    <h1>ble_dis_c.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the Device Information Service (DIS) client. It discovers DIS
+      characteristics on a peer and reads their values.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Decode DIS characteristic values from read responses.</li>
+      <li>Track handles discovered via DB discovery.</li>
+      <li>Dispatch read responses and errors to the application.</li>
+      <li>Queue GATT read requests using the GATT queue module.</li>
+    </ul>
+
+    <h2>Key behaviors</h2>
+    <ul>
+      <li><code>ble_dis_c_init</code> registers DIS discovery.</li>
+      <li><code>ble_dis_c_on_db_disc_evt</code> maps characteristic handles.</li>
+      <li><code>ble_dis_c_read</code> performs queued reads.</li>
+      <li><code>ble_dis_c_on_ble_evt</code> handles responses and disconnects.</li>
+    </ul>
+
+    <h2>Decoding logic</h2>
+    <ul>
+      <li>System ID and PnP ID decoding validate payload lengths.</li>
+      <li>String characteristics are passed as raw byte buffers.</li>
+      <li>Peripheral classification uses <code>decode_peripheral_device_by_dis</code>.</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Uses DB discovery, GATT queue, and BLE services manager helpers.</p>
+
+    <h2>Notes</h2>
+    <p>Some DIS characteristics are currently disabled by commented code.</p>
+  </body>
+</html>

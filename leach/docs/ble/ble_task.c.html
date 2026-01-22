@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_task.c Documentation</title>
+  </head>
+  <body>
+    <h1>ble_task.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the BLE task thread and connection/bonding state management for
+      Leach devices. It orchestrates scanning, connection verification, and
+      bonding workflows.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Initialize BLE task state and tracking structures.</li>
+      <li>Run the BLE FreeRTOS thread.</li>
+      <li>Manage bonding state and connection list.</li>
+      <li>Handle Ruptela commands in simulation mode.</li>
+      <li>Update ignition state for connected peripherals.</li>
+    </ul>
+
+    <h2>Task behavior</h2>
+    <ul>
+      <li>Waits for configuration to load before enabling BLE services.</li>
+      <li>Starts central services and scanning.</li>
+      <li>Processes connection and disconnection events.</li>
+      <li>Verifies peripherals or removes them from the list.</li>
+      <li>Handles bonding LED feedback and pairing state.</li>
+    </ul>
+
+    <h2>Connection and bonding management</h2>
+    <ul>
+      <li><code>save_bondings</code> persists bonded device list.</li>
+      <li><code>verify_peripheral</code> accepts or rejects devices.</li>
+      <li><code>remove_peripheral</code> updates connection list on disconnect.</li>
+      <li><code>disconnect_and_delete_all_peripheral</code> clears all bonds.</li>
+      <li><code>activate_bonding_state</code> and <code>de_activate_bonding_state</code>.</li>
+    </ul>
+
+    <h2>Data structures and globals</h2>
+    <ul>
+      <li><code>connections_array</code> and <code>current_conn_info</code>.</li>
+      <li>Bonded/connected counters and flags.</li>
+      <li><code>connection_list_semaphore</code> for synchronization.</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Uses BLE services manager, configuration module, and optional Ruptela simulation.</p>
+
+    <h2>Notes</h2>
+    <p>Contains project-specific pairing rules and event-group logic.</p>
+  </body>
+</html>

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>ble_lbs_c.c Documentation</title>
+  </head>
+  <body>
+    <h1>ble_lbs_c.c</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Implements the LED Button Service (LBS) client. It discovers the LBS
+      service on a peer and handles notifications and writes.
+    </p>
+
+    <h2>Main responsibilities</h2>
+    <ul>
+      <li>Handle notifications for button state (and command state in simulation).</li>
+      <li>Configure CCCDs to enable notifications.</li>
+      <li>Send LED status and log messages to the peer device.</li>
+      <li>Initialize the client and process DB discovery events.</li>
+    </ul>
+
+    <h2>Key behaviors</h2>
+    <ul>
+      <li><code>ble_lbs_c_init</code> registers the LBS UUID.</li>
+      <li><code>ble_lbs_on_db_disc_evt</code> maps discovery handles.</li>
+      <li><code>ble_lbs_c_on_ble_evt</code> handles notifications.</li>
+      <li><code>ble_lbs_c_button_notif_enable</code> writes CCCDs.</li>
+      <li><code>ble_lbs_led_status_send</code> writes LED state.</li>
+      <li><code>ble_lbs_log_send</code> sends log payloads (simulation).</li>
+    </ul>
+
+    <h2>Notification handling</h2>
+    <ul>
+      <li>Button characteristic expects 4 bytes.</li>
+      <li>Command characteristic expects 16 bytes (simulation only).</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Uses DB discovery and the GATT queue for writes.</p>
+
+    <h2>Notes</h2>
+    <p>Command/log characteristics are compiled only in simulation mode.</p>
+  </body>
+</html>

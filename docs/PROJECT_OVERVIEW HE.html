@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+      <title>PROJECT_OVERVIEW HE</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+      <link rel="stylesheet"
+            href="file:///c:\Users\avrah\.cursor\extensions\shd101wyy.markdown-preview-enhanced-0.8.20-universal\crossnote\dependencies\katex\katex.min.css">
+
+
+
+
+
+      <link rel="stylesheet" href="dark-theme.css">
+      
+</head>
+
+<body for="html-export">
+
+
+      <div class="crossnote markdown-preview  ">
+
+            <h1 id="סקירת-קושחת-המקלדת">סקירת קושחת המקלדת </h1>
+            <p>הרפוזיטורי הזה מכיל את קוד ה-Cloud-Wise BLE Keypad שרץ על בקר Nordic nRF52. המקלדת מתנהגת במקביל כ-BLE
+                  Peripheral וכ-BLE Central שמתחזק קישורים מוצפנים עם מספר התקני “leach” ועם מודם Ruptela. ממשק החומרה
+                  מורכב ממטריצת חמישה מקשים, LED-ים, צופר, יציאת ממסר, חיווי הצתה ו-EEPROM חיצוני. היישום בנוי על
+                  FreeRTOS מעל SoftDevice S132 וכולל Bootloader DFU מאובטח.</p>
+            <p>המסמך מסביר מה עושה הפרויקט ומפרק את המודולים כך שמפתח פול-סטאק יוכל להתמצא מהר כשנכנס לעולמות אמבדד.</p>
+            <hr>
+            <h2 id="פלטפורמה-וסטאק-הבילד">פלטפורמה וסטאק הבילד </h2>
+            <ul>
+                  <li><strong>MCU ו-SDK</strong> – ‏nRF52 עם SoftDevice S132. תיקיית <code>nrf5-sdk/</code> של Nordic
+                        מספקת כותרות BLE, מנהלי התקנים ומידלוור.</li>
+                  <li><strong>RTOS</strong> – ‏<code>FreeRTOS-Kernel/</code> ונדור בפרויקט כדי להעמיד את הסקדולר.</li>
+                  <li><strong>Bootloader</strong> – ‏<code>bootloader/</code> מכיל DFU מאובטח של Nordic לעדכוני BLE ללא
+                        דיבאגר.</li>
+                  <li><strong>Cloud-Wise SDK</strong> – ‏<code>cloud-wise-sdk/</code> היא שכבת האבסטרקציה של היצרן: HAL,
+                        דרייברים ולוגיקה משותפת למוצרים שונים.</li>
+                  <li><strong>אפליקציה</strong> – ‏<code>leach/</code> הוא קוד המקלדת שמחבר את מודולי ה-SDK לאפליקציית
+                        FreeRTOS.</li>
+                  <li><strong>נכסי Build</strong> – ‏<code>build/keypad_build-{debug,release}.bat</code> עוטפים את שלבי
+                        SES/nrfutil, <code>Keypad.emProject</code> הוא פרויקט ה-SES, ו-<code>config/*.xml</code> מגדירים
+                        את פריסת הפלאש לאפליקציה ולבוטלואדר.</li>
+            </ul>
+            <p>כדי להרכיב קושחה מריצים אחד מהסקריפטים עם מספר גרסה סמנטי (ראו <code>readme.txt</code>). גרסתRelease
+                  מסירה לוגי RTT, ו-Debug משאירה אותם.</p>
+            <hr>
+            <h2 id="מפת-תיקיות">מפת תיקיות </h2>
+            <table>
+                  <thead>
+                        <tr>
+                              <th>נתיב</th>
+                              <th>שימוש</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                              <td><code>leach/</code></td>
+                              <td>קוד האפליקציה (משימות, שירותי BLE, אינטגרציית Ruptela).</td>
+                        </tr>
+                        <tr>
+                              <td><code>cloud-wise-sdk/hal</code></td>
+                              <td>BSP: GPIO,‏ ADC,‏ PWM,‏ SPI, שעון וטיפוסים משותפים.</td>
+                        </tr>
+                        <tr>
+                              <td><code>cloud-wise-sdk/drivers</code></td>
+                              <td>דרייברים (EEPROM ב-SPI, מנגינות צופר וכו').</td>
+                        </tr>
+                        <tr>
+                              <td><code>cloud-wise-sdk/logic</code></td>
+                              <td>לוגיקה משותפת (קונפיגורציה, מוניטור, סריקת מקלדת, BLE).</td>
+                        </tr>
+                        <tr>
+                              <td><code>bootloader/</code></td>
+                              <td>Bootloader DFU מאובטח לעדכוני OTA.</td>
+                        </tr>
+                        <tr>
+                              <td><code>FreeRTOS-Kernel/</code></td>
+                              <td>קוד מקור ה-RTOS.</td>
+                        </tr>
+                        <tr>
+                              <td><code>nrf5-sdk/</code></td>
+                              <td>‏SDK של Nordic (כותרות SoftDevice, פרופילי BLE, פריפריות).</td>
+                        </tr>
+                        <tr>
+                              <td><code>build/</code></td>
+                              <td>סקריפטי build, קובץ SoftDevice Hex ושלבי אריזה.</td>
+                        </tr>
+                  </tbody>
+            </table>
+            <hr>
+            <h2 id="זרימת-ריצה-leachmainc">זרימת ריצה (<code>leach/main.c</code>) </h2>
+            <ol>
+                  <li><strong>Startup</strong> – ‏<code>main()</code> מאתחלת לוגינג, LFCLK ומונה ריסטים לא מאותחל להבחין
+                        בין cold boot לריסט.</li>
+                  <li><strong>System init</strong> – ‏<code>modules_init()</code> מקימה <code>app_timer</code>
+                        ו-<code>peripherals_init()</code> מכוילת GPIO, צופר וקריאת המספר הסיליקוני.</li>
+                  <li><strong>שירותי מכונת מצבים</strong> – ‏<code>state_machine_init()</code> מפעילה Watchdog ו-RTC
+                        נמוך שמייצר שעון ‎1‎Hz (<code>cloud-wise-sdk/logic/state_machine.c</code>).</li>
+                  <li><strong>יצירת משימות</strong> – ‏FreeRTOS מייצרת:
+                        <ul>
+                              <li>‏<code>logger_thread</code> – ריקון לוגים מושהים,</li>
+                              <li>‏<code>monitor_thread</code> – לוגיקה עסקית,</li>
+                              <li>‏<code>ble_thread</code> – שליטה בחיבורים ובשיוך,</li>
+                              <li>‏<code>keypad_thread</code> – סריקת מטריצה.</li>
+                        </ul>
+                  </li>
+                  <li><strong>חיווט משימות</strong> – ‏<code>init_tasks()</code> מקצה סמפורים/אירועים גלובליים, מאתחל
+                        שירותי BLE, טוען קונפיגורציית EEPROM ומוסר שליטה לסקדולר.</li>
+            </ol>
+            <p>לאחר מכן ההתקן ישן בין טיקים של FreeRTOS בזמן שקבוצות אירועים ותורים מסנכרנים את המקלדת, המוניטור וה-BLE.
+            </p>
+            <hr>
+            <h2 id="אחריות-משימות">אחריות משימות </h2>
+            <table>
+                  <thead>
+                        <tr>
+                              <th>משימה</th>
+                              <th>קובץ</th>
+                              <th>אחריות</th>
+                        </tr>
+                  </thead>
+                  <tbody>
+                        <tr>
+                              <td><code>monitor_thread</code></td>
+                              <td><code>cloud-wise-sdk/logic/monitor.c</code></td>
+                              <td>מאתחלת EEPROM, טוענת ומנקה קונפיגורציה ורשימות שיוך, מפעילה את מכונת המצבים של המקלדת,
+                                    מנהלת מצבי אבטחה (דרוך/משוחרר/גראז'/סיסמה חדשה), מתזמנת איפוסים, מפעילה צלילים
+                                    ומזרימה לוגים.</td>
+                        </tr>
+                        <tr>
+                              <td><code>keypad_thread</code></td>
+                              <td><code>cloud-wise-sdk/logic/keypad.c</code></td>
+                              <td>סורקת את המטריצה ‎2×3 כל ‎40‎ מ״ש, מבצעת דה-באונס, מזהה קצר/ארוך, מזינה תור ושומרת על
+                                    דפוס LED תואם מצב אבטחה.</td>
+                        </tr>
+                        <tr>
+                              <td><code>ble_thread</code></td>
+                              <td><code>leach/ble/ble_task.c</code></td>
+                              <td>ממתינה לאירועי BLE, מריצה סריקות/פילטרים, מנהלת שיוך, שומרת כתובות MAC ומספרים
+                                    סידוריים ב-EEPROM, משקפת מאפיין הצתה ומגשרת פקודות/לוגים של Ruptela.</td>
+                        </tr>
+                        <tr>
+                              <td><code>logger_thread</code></td>
+                              <td><code>leach/main.c</code></td>
+                              <td>מרוקנת באפרי <code>NRF_LOG</code> ב-idle כדי שלוגי RTT/UART לא יחסמו.</td>
+                        </tr>
+                        <tr>
+                              <td>משימת SoftDevice</td>
+                              <td><code>leach/ble/ble_services_manager.c</code></td>
+                              <td>רשומה דרך <code>nrf_sdh_freertos</code>, מטפלת באירועי BLE, פרסום, GATT, תעבורת DFU
+                                    ומו״מ פרמטרי חיבור.</td>
+                        </tr>
+                  </tbody>
+            </table>
+            <p>Idle hooks של FreeRTOS מאכילים את ה-Watchdog ו-Tick של <code>state_machine.c</code> מניע מוני זמן
+                  גלובליים.</p>
+            <hr>
+            <h2 id="פירוט-מודולים">פירוט מודולים </h2>
+            <h3 id="קונפיגורציה-והתמדה">קונפיגורציה והתמדה </h3>
+            <ul>
+                  <li>‏<code>cloud-wise-sdk/logic/configuration.*</code> טוען/שומר את <code>EpromConfiguration</code>
+                        ו-<code>DeviceConfiguration</code> דרך EEPROM ב-SPI, מאמת CRC, מאפס לברירת מחדל ומתחזק רשימות
+                        התקנים משויכים (כתובות + מספרים סידוריים באורך 16 בייט). כולל עזרים לניקוי שיוכים, עדכון דגלי
+                        גראז' והגדרות ממסר.</li>
+                  <li>‏<code>cloud-wise-sdk/drivers/eprom.*</code> מגדיר את פלאש ה-SPI (סדרת M95) בעזרת
+                        <code>nrfx_spi</code>, עוטף פעולות קריאה/כתיבה ומגן על הגישה באמצעות סמפור RTOS.</li>
+                  <li>‏<code>cloud-wise-sdk/logic/flash_data.h</code> מצהיר על עזרים למחיקת אזורי פלאש פנימיים לקבצים
+                        גדולים או בועות פרמטרים (מימוש ספציפי לפרויקט).</li>
+            </ul>
+            <h3 id="מכונת-מצבים-וניטור">מכונת מצבים וניטור </h3>
+            <ul>
+                  <li>‏<code>cloud-wise-sdk/logic/monitor.*</code> הוא לב המקלדת:
+                        <ul>
+                              <li>מאמת CRC ב-EEPROM, עוקב אחר סיבות ריסט ומבהב את כל ה-LED-ים באתחול.</li>
+                              <li>מתחזק את האנומים <code>KeyState</code> ו-<code>SecurityState</code>, מפעיל טיימאאוטים
+                                    (שחרור, גראז', נעילה) ומגיב לקלט מהמקלדת.</li>
+                              <li>משגר לוגים/פקודות ל-BLE או למודם Ruptela, מתזמן אירועי Keep-Alive, אוכף מדיניות שיוך
+                                    ומבצע איפוסים כשדפוס החיבורים לא תקין.</li>
+                              <li>מפעיל מנגינות צופר (<code>failure_buzzer</code>,‏ <code>success_buzzer</code>,‏
+                                    <code>lock_buzzer</code>) ואנימציות LED דרך <code>peripherals.c</code>.</li>
+                              <li>עוקב אחר ביטי הצתה/ממסר ומסנכרן אותם עם מאפייני BLE.</li>
+                        </ul>
+                  </li>
+                  <li>‏<code>cloud-wise-sdk/logic/state_machine.*</code> מקים את ה-Watchdog ומקור ה-RTC Tick, מספק
+                        <code>state_machine_feed_watchdog()</code> ומעדכן <code>time_since_2020</code> כדי שמודולים
+                        אחרים (כמו לוגי Ruptela) יוכלו לתזמן אירועים.</li>
+            </ul>
+            <h3 id="ממשק-משתמש">ממשק משתמש </h3>
+            <ul>
+                  <li>‏<code>cloud-wise-sdk/logic/keypad.*</code> מממש את הנעת העמודות/שורות, זיהוי לחיצה ארוכה של ‎2.5‎
+                        שניות ותורי ההודעות ל-<code>monitor_thread</code>. בנוסף הוא מבהב את LED "כוכבית" אחרת לכל מצב
+                        אבטחה ומתחשב בכניסת ההצתה לשינוי הדפוס.</li>
+                  <li>‏<code>cloud-wise-sdk/logic/peripherals.*</code> מרכז עזרי GPIO: קריאת הצתה, הדלקת LED-ים, מדידת
+                        VDD דרך SAADC ושמירה במטמון של המספר הסיליקוני.</li>
+                  <li>‏<code>cloud-wise-sdk/drivers/buzzer.*</code> משתמש ב-<code>nrfx_pwm</code> כדי לסנתז מנגינות
+                        קצרות להצלחה/שגיאה/נעילה/הדלקה ומספק את <code>buzzer_train</code>,‏ <code>buzzer_long</code>
+                        וטבלאות מנגינה.</li>
+            </ul>
+            <h3 id="קישוריות-ble-ושליטה-מרחוק">קישוריות BLE ושליטה מרחוק </h3>
+            <ul>
+                  <li>‏<code>leach/ble/ble_services_manager.*</code> מגדיר SoftDevice, פרסום, סריקה, GATT, לקוח Device
+                        Information ושירות Leach מותאם. מסנן לפי UUID ולפי MAC/Whitelist אופציונלי, מפעיל שיוך ומעלה
+                        <code>event_ble_connection_changed</code> כשחיבורים משתנים.</li>
+                  <li>‏<code>leach/ble/ble_task.*</code> מתאם אימות בצד ה-Central:
+                        <ul>
+                              <li>מקבל או דוחה פריפריות לפי כתובות שמורות ומצב שיוך.</li>
+                              <li>מנהל את <code>connections_array[]</code>, סופר חיבורים ומפריד בין leach למודם.</li>
+                              <li>שומר התקנים חדשים ב-EEPROM לאחר שיוך (כולל מספרים סידוריים מ-DIS) ואז מפעיל איפוס
+                                    לשיפור יציבות.</li>
+                              <li>מגשר פקודות/לוגים של Ruptela (<code>Ruptela.c</code>) דרך תורים
+                                    כש-<code>RUPTELA_SERVICE_SIMULATION</code> פעיל.</li>
+                        </ul>
+                  </li>
+                  <li>‏<code>cloud-wise-sdk/logic/ignition.*</code> מפענח כתיבות למאפיין ההצתה ב-GATT, מגדיר ביטי אירוע
+                        ויכול לדרוש איפוס MCU כשפקודות מרוחקות דורשות זאת.</li>
+                  <li>‏<code>cloud-wise-sdk/logic/ble_file_transfer.*</code> מגדיר פורמט חבילות להעברת קבצים/לוגים מעל
+                        BLE (כגון זרימת לוגים למודם מצוות), כולל קרסי סימולציה.</li>
+                  <li>‏<code>cloud-wise-sdk/logic/commands.h</code> מונה פקודות CLI/בדיקה (צפצוף, כיול, מידע על Build,
+                        ניקוי פלאש וכו') הזמינות מעל BLE UART או ערוץ סריאלי.</li>
+            </ul>
+            <h3 id="hal-ומנהלי-התקנים">HAL ומנהלי התקנים </h3>
+            <ul>
+                  <li>‏<code>cloud-wise-sdk/hal/*.c</code> מגדירים כיווני GPIO, מאתחלים PWM/SAADC/SPI ומספקים APIs כגון
+                        <code>hal_read_vdd_raw</code>,‏ <code>hal_get_pwm</code>,‏
+                        <code>hal_read_device_serial_number</code> כדי להפריד את פרטי הנורדיק מהלוגיקה.</li>
+                  <li>‏<code>cloud-wise-sdk/hal/hal_boards.h</code> ממפה פינים לוגיים (מקשים, LED-ים, ממסר, חיווי הצתה,
+                        צופר) למספרי GPIO ב-nRF52.</li>
+                  <li>‏<code>cloud-wise-sdk/hal/hal_drivers.h</code> ו-<code>hal_data_types.h</code> מגדירים אנומים,
+                        טיפוסי אירועים ומבנים משותפים כדי ששכבות גבוהות ישמרו על אגנוסטיות לחומרה.</li>
+            </ul>
+            <h3 id="bootloader-ו-dfu">Bootloader ו-DFU </h3>
+            <ul>
+                  <li>‏<code>bootloader/main.c</code> נשען על תבנית ה-DFU המאובטח של Nordic: מגן על אזור הבוטלואדר,
+                        מאתחל לוגים של RTT עבור אירועי DFU ומריץ <code>nrf_bootloader_init()</code> עם צופה LED. מפתחות
+                        ציבוריים לאימות אימג'ים נשמרים ב-<code>bootloader/config/dfu_public_key.c</code>.</li>
+                  <li>תיאום עם האפליקציה נעשה דרך <code>config/bootloader_flash_placement.xml</code> כדי שמפת הזיכרון של
+                        שני האימג'ים לא תתנגש.</li>
+            </ul>
+            <h3 id="אוטומציית-build-ו-release">אוטומציית Build ו-Release </h3>
+            <ul>
+                  <li>‏<code>build/keypad_build-debug.bat</code> ו-<code>build/keypad_build-release.bat</code> מפעילים
+                        את Segger Embedded Studio כדי לקמפל את ה-<code>.emProject</code>, למזג את
+                        <code>build/s132_nrf52_7.2.0_softdevice.hex</code> ולארוז ארטיפקטים. מקבלים ארגומנט גרסה כדי
+                        ליישר מטה-דאטה ליומן <code>readme.txt</code>.</li>
+            </ul>
+            <hr>
+            <h2 id="מסלולי-נתונים-טיפוסיים">מסלולי נתונים טיפוסיים </h2>
+            <ol>
+                  <li><strong>קלט מקלדת → מצב אבטחה</strong>
+                        <ul>
+                              <li>‏<code>keypad_thread</code> משגרת <code>KeypadMessage</code>.</li>
+                              <li>‏<code>monitor_thread</code> קוראת אותו, מעדכנת
+                                    <code>key_state</code>/<code>security_state</code>, מתעדת מעברים ויכולה להפעיל יציאת
+                                    הצתה או לשלוח פקודות BLE.</li>
+                        </ul>
+                  </li>
+                  <li><strong>שיוך BLE</strong>
+                        <ul>
+                              <li>‏<code>ble_services_manager</code> מזהה <code>BLE_GAP_EVT_CONNECTED</code>, מגלה
+                                    שירותים וממלא <code>current_conn_info</code>.</li>
+                              <li>‏<code>ble_thread</code> מחליטה אם לקבל, להוסיף ל-<code>connections_array</code>
+                                    ולשמור כתובות/מספרים דרך <code>configuration_save_address_list()</code>.</li>
+                        </ul>
+                  </li>
+                  <li><strong>פקודת Ruptela מרחוק</strong>
+                        <ul>
+                              <li>מאפיין הלוג ב-BLE מעביר פקודה של 16 בייט ⇒ ‏<code>ble_thread</code> מכניסה לתור ⇒
+                                    ‏<code>Ruptela.c</code> מפענח, מעדכן קונפיגורציה/זמן/סיסמה ומפיק לוג הצלחה/כישלון.
+                              </li>
+                        </ul>
+                  </li>
+                  <li><strong>פיקוח Watchdog</strong>
+                        <ul>
+                              <li>‏<code>state_machine.c</code> מאכיל את ה-WDT.</li>
+                              <li>‏<code>monitor_thread</code> מגדירה ביטי <code>monitor_task_set()</code>; אם משימה
+                                    נתקעת, <code>monitor_task_check()</code> מזהה ויכול ללוגג או לאפס.</li>
+                        </ul>
+                  </li>
+            </ol>
+            <hr>
+            <h2 id="איפה-להעמיק">איפה להעמיק </h2>
+            <ul>
+                  <li><strong>הגדרות התנהגות</strong> – ‏<code>cloud-wise-sdk/logic/monitor.c</code> הוא נקודת כניסה
+                        מצוינת; הוא מחבר קונפיגורציה, אירועי מקלדת, לוגים ואיפוסים.</li>
+                  <li><strong>פרטי BLE</strong> – ‏<code>leach/ble/ble_services_manager.c</code> מסביר סריקה, מסנני
+                        Whitelist/UUID, UUID מותאם ושגרות GATT.</li>
+                  <li><strong>מיפוי חומרה</strong> – ‏<code>cloud-wise-sdk/hal/hal_boards.h</code> עוזר להתאים שמות
+                        פינים ל-PCB.</li>
+                  <li><strong>היסטוריית גרסאות</strong> – ‏<code>readme.txt</code> מונה גרסאות קושחה עם פיצ'רים
+                        ותיקונים.</li>
+            </ul>
+            <p>עם המסמכים הללו אפשר לעקוב אחרי כל פיצ'ר (למשל שיוך, מצב גראז', לוגי הצתה) מהקלט בחומרה, דרך מודולי
+                  הלוגיקה ועד ללינקים של BLE או Ruptela.</p>
+
+      </div>
+
+
+
+
+
+
+
+
+
+</body>
+
+</html>

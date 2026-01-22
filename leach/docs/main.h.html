@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>main.h Documentation</title>
+  </head>
+  <body>
+    <h1>main.h</h1>
+
+    <h2>Purpose</h2>
+    <p>
+      Header for the main application module. It exposes a single ISR-safe
+      helper for event groups.
+    </p>
+
+    <h2>Public API</h2>
+    <ul>
+      <li>
+        <code>send_event_from_isr(EventGroupHandle_t event, EventBits_t uxBitsToSet)</code>
+        - Sets event bits from interrupt context and yields if a higher-priority
+        task is woken.
+      </li>
+    </ul>
+
+    <h2>Usage notes</h2>
+    <ul>
+      <li>Intended for ISR context only.</li>
+      <li>Wraps <code>xEventGroupSetBitsFromISR</code> and <code>portYIELD_FROM_ISR</code>.</li>
+      <li>Requires FreeRTOS event group types in the including unit.</li>
+    </ul>
+
+    <h2>Dependencies</h2>
+    <p>Relies on FreeRTOS event group types and ISR yield macros.</p>
+
+    <h2>Notes</h2>
+    <p>The header is intentionally minimal to reduce coupling.</p>
+  </body>
+</html>
